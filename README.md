@@ -27,40 +27,39 @@ How-to
 4. Create your IAP UI
 5. Use the methods of the `[IAPManager sharedIAPManager]` singleton:
     - Check if the App Store is available: `[[IAPManager sharedIAPManager] canPurchase]`
-    
     - To obtain product information:
         
-        [[IAPManager sharedIAPManager] getProductsForIds:@[@"superpremiumversion"]
-                                              completion:^(NSArray *products) {
-                                                  BOOL hasProducts = [products count] != 0;
-                                                  if(! hasProducts) {
-                                                      NSLog(@":(");
-                                                  }
-                                                  else {
-                                                      SKProduct *premium = products[0];
+            [[IAPManager sharedIAPManager] getProductsForIds:@[@"superpremiumversion"]
+                                                  completion:^(NSArray *products) {
+                                                      BOOL hasProducts = [products count] != 0;
+                                                      if(! hasProducts) {
+                                                          NSLog(@":(");
+                                                      }
+                                                      else {
+                                                          SKProduct *premium = products[0];
                                                       
-                                                      NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];                                                                                                                 [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
-                                                      [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-                                                      [numberFormatter setLocale:extrasPackProduct.priceLocale];
-                                                      NSString *formattedPrice = [numberFormatter stringFromNumber:premium.price];
-                                                      NSLog(@"super premium: %@ for %@", premium.localizedTitle, formattedPrice);
-                                                  }
-        }];
+                                                          NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];                                                                                                                 [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+                                                          [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+                                                          [numberFormatter setLocale:extrasPackProduct.priceLocale];
+                                                          NSString *formattedPrice = [numberFormatter stringFromNumber:premium.price];
+                                                          NSLog(@"super premium: %@ for %@", premium.localizedTitle, formattedPrice);
+                                                      }
+            }];
         
     - To purchase a product:
       
-        [[IAPManager sharedIAPManager] purchaseProductForId:@"superpremiumversion"
-                                                 completion:^{
-                                                     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                                                     UIAlertView *thanks = [[UIAlertView alloc] initWithTitle:@"Thanks!"
-                                                                                                      message:@"The extra features are now available"
-                                                                                                     delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                                                     [thanks show];
-                                                 } error:^(NSError *err) {
-                                                     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [[IAPManager sharedIAPManager] purchaseProductForId:@"superpremiumversion"
+                                                     completion:^{
+                                                         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                                                         UIAlertView *thanks = [[UIAlertView alloc] initWithTitle:@"Thanks!"
+                                                                                                          message:@"The extra features are now available"
+                                                                                                         delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                                         [thanks show];
+                                                     } error:^(NSError *err) {
+                                                         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                                                      
-                                                     NSLog(@"An error occured while purchasing: %@", err.localizedDescription);
-                                                     // show an error alert to the user.
-                                                 }];
+                                                         NSLog(@"An error occured while purchasing: %@", err.localizedDescription);
+                                                         // show an error alert to the user.
+                                                     }];
                                                  
       StoreKit will then ask the user if they want to purchase the product.
