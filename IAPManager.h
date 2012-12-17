@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
 
-typedef void(^PurchaseCompletionBlock)(void);
+typedef void(^PurchaseCompletionBlock)(SKPaymentTransaction *transaction);
 typedef void(^ProductsCompletionBlock)(NSArray *products);
 typedef void(^ErrorBlock)(NSError *error);
 typedef void(^PurchasedProductsChanged)(void);
