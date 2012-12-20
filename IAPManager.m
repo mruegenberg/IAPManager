@@ -112,7 +112,7 @@ NSURL *purchasesURL() {
         PurchasedProductsChanged callback = t[0];
         callback();
     }
-    completionBlock();
+    completionBlock(NULL);
 #else
     if(! [SKPaymentQueue canMakePayments])
         err([NSError errorWithDomain:@"IAPManager" code:0 userInfo:[NSDictionary dictionaryWithObject:@"Can't make payments" forKey:NSLocalizedDescriptionKey]]);
@@ -132,7 +132,7 @@ NSURL *purchasesURL() {
         PurchasedProductsChanged callback = t[0];
         callback();
     }
-    completionBlock();
+    completionBlock(NULL);
 #else
     [self getProductsForIds:@[productId] completion:^(NSArray *products) {
         if([products count] == 0) err([NSError errorWithDomain:@"IAPManager" code:0 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Didn't find products with ID %@", productId] forKey:NSLocalizedDescriptionKey]]);
@@ -164,7 +164,7 @@ NSURL *purchasesURL() {
             }
             self.purchasedItemsChanged = YES;
             [queue finishTransaction:transaction];
-            if(completion) completion();
+            if(completion) completion(transaction);
         }
         else if(transaction.transactionState == SKPaymentTransactionStateFailed) {
             if(err) err(transaction.error);
