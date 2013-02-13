@@ -13,6 +13,7 @@ typedef void(^PurchaseCompletionBlock)(SKPaymentTransaction *transaction);
 typedef void(^ProductsCompletionBlock)(NSArray *products);
 typedef void(^ErrorBlock)(NSError *error);
 typedef void(^PurchasedProductsChanged)(void);
+typedef void(^RestorePurchasesComplectionBlock)(void);
 
 // use SIMULATE_PURCHASES to prevent any actual purchasing from happening, i.e
 // if a user "buys" an item, the transaction immediately succeeds, without any communication with the App Store happening.
@@ -38,6 +39,8 @@ typedef void(^PurchasedProductsChanged)(void);
 #pragma mark Purchase
 
 - (void)restorePurchases;
+
+- (void)restorePurchasesWithCompletion:(RestorePurchasesComplectionBlock)completionBlock;
 
 - (void)purchaseProduct:(SKProduct *)product completion:(PurchaseCompletionBlock)completionBlock error:(ErrorBlock)err;
 
