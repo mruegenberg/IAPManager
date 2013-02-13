@@ -18,6 +18,8 @@
 
 @property (strong) NSMutableArray *purchasesChangedCallbacks;
 
+@property (copy) RestorePurchasesComplectionBlock restoreCompletionBlock;
+
 @end
 
 NSURL *purchasesURL() {
@@ -101,6 +103,11 @@ NSURL *purchasesURL() {
 #pragma mark - Purchase
 
 - (void)restorePurchases {
+    [self restorePurchasesWithCompletion:nil];
+}
+
+- (void)restorePurchasesWithCompletion:(RestorePurchasesComplectionBlock)completionBlock {
+    self.restoreCompletionBlock = completionBlock;
     return [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
 
@@ -190,6 +197,13 @@ NSURL *purchasesURL() {
             [self.purchasesChangedCallbacks removeObjectAtIndex:i];
         }
     }
+}
+
+- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
+    if (self.restoreCompletionBlock) {
+        self.restoreCompletionBlock();
+    }
+    self.restoreCompletionBlock = nil;
 }
 
 @end
