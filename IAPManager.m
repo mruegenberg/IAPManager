@@ -18,7 +18,7 @@
 
 @property (strong) NSMutableArray *purchasesChangedCallbacks;
 
-@property (copy) RestorePurchasesComplectionBlock restoreCompletionBlock;
+@property (copy) RestorePurchasesCompletionBlock restoreCompletionBlock;
 
 @end
 
@@ -106,7 +106,7 @@ NSURL *purchasesURL() {
     [self restorePurchasesWithCompletion:nil];
 }
 
-- (void)restorePurchasesWithCompletion:(RestorePurchasesComplectionBlock)completionBlock {
+- (void)restorePurchasesWithCompletion:(RestorePurchasesCompletionBlock)completionBlock {
     self.restoreCompletionBlock = completionBlock;
     return [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
