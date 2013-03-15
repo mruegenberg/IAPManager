@@ -51,12 +51,16 @@ NSURL *purchasesURL() {
     return self;
 }
 
+- (void)persistPurchasedItems {
+  BOOL success = [self.purchasedItems writeToURL:purchasesURL() atomically:YES];
+  if(! success) {
+      NSLog(@"Saving purchases to %@ failed!", purchasesURL());
+  }
+}
+
 - (void)willResignActive:(NSNotification *)notification {
     if(self.purchasedItemsChanged) {
-        BOOL success = [self.purchasedItems writeToURL:purchasesURL() atomically:YES];
-        if(! success) {
-            NSLog(@"Saving purchases to %@ failed!", purchasesURL());
-        }
+      [self persistPurchasedItems];
     }
 }
 
@@ -165,6 +169,7 @@ NSURL *purchasesURL() {
         if(transaction.transactionState == SKPaymentTransactionStatePurchased ||
            transaction.transactionState == SKPaymentTransactionStateRestored) {
             [self.purchasedItems addObject:transaction.payment.productIdentifier];
+            [self persistPurchasedItems]; // be extra safe
             for(NSArray *t in self.purchasesChangedCallbacks) {
                 PurchasedProductsChanged callback = t[0];
                 callback();
