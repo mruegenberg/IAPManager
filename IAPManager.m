@@ -179,6 +179,7 @@ NSURL *purchasesURL() {
             if(completion) completion(transaction);
         }
         else if(transaction.transactionState == SKPaymentTransactionStateFailed) {
+            [queue finishTransaction:transaction];
             if(err) err(transaction.error);
         }
     }
