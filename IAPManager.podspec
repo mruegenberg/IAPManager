@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "IAPManager"
-  s.version      = "0.2.1"
+  s.version      = "0.2.2"
   s.summary      = "Yet Another simple in-app purchase interface."
   s.homepage     = "http://github.com/mruegenberg/IAPManager"
 
@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
 
   s.author       = { "Marcel Ruegenberg" => "github@dustlab.com" }
 
-  s.source       = { :git => "https://github.com/mruegenberg/IAPManager.git", :tag => "0.2.1" }
+  s.source       = { :git => "https://github.com/mruegenberg/IAPManager.git", :tag => "0.2.2" }
 
   s.platform     = :ios, '5.0'
   s.requires_arc = true
