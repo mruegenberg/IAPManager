@@ -8,6 +8,6 @@ compiler:
 before_script:
   - mkdir build
   - cd build
-  - cmake ..
+  - cmake -G Xcode ..
 
 script: xcodebuild
