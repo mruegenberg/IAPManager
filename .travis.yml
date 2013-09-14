@@ -1,1 +1,11 @@
 language: objective-c
+
+compiler:
+  - clang
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ..
+
+script: xcodebuild
