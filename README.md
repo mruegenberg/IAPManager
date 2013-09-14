@@ -63,3 +63,9 @@ How-to
                                          }];
 ```                                         
       StoreKit will then ask the user if they want to purchase the product.
+
+## Contact
+
+![Travis CI build status](https://api.travis-ci.org/mruegenberg/IAPManager.png)
+
+Bug reports and pull requests are welcome! Contact me via e-mail or just by opening an issue on GitHub.
