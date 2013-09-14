@@ -23,7 +23,7 @@ target_link_libraries(IAPManager
   )
 
 set_target_properties(IAPManager PROPERTIES
-   MACOSX_BUNDLE_GUI_IDENTIFIER "com.yourcompany.NavApp3"
+   MACOSX_BUNDLE_GUI_IDENTIFIER "com.yourcompany.IAPManager"
    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in
    RESOURCE "${RESOURCES}"
    XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
