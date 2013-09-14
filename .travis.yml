@@ -1,6 +1,6 @@
 language: objective-c
 
-install: cmake
+install: brew install cmake
 
 compiler:
   - clang
