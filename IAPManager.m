@@ -153,7 +153,46 @@ NSURL *purchasesURL() {
 }
 
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
+    BOOL newPurchases = NO;
     for(SKPaymentTransaction *transaction in transactions) {
+        switch (transaction.transactionState) {
+            case SKPaymentTransactionStateRestored: // sic!
+            case SKPaymentTransactionStatePurchased:
+            {
+                [self.purchasedItems addObject:transaction.payment.productIdentifier];
+                newPurchases = YES;
+                [queue finishTransaction:transaction];
+                break;
+            }
+            case SKPaymentTransactionStateFailed:
+            {
+                [queue finishTransaction:transaction];
+                break;
+            }
+            case SKPaymentTransactionStatePurchasing:
+            {
+#ifdef DEBUG
+                NSLog(@"%@ is being processed by the App Store...", transaction.payment.productIdentifier);
+#endif
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    
+    if(newPurchases) {
+        [self persistPurchasedItems];
+        self.purchasedItemsChanged = YES;
+        
+        for(NSArray *t in self.purchasesChangedCallbacks) {
+            PurchasedProductsChanged callback = t[0];
+            callback();
+        }
+    }
+    
+    for(SKPaymentTransaction *transaction in transactions) {
+        // find the block and error block correspoding to this transaction
         NSUInteger c = [self.payments count];
         PurchaseCompletionBlock completion = nil;
         ErrorBlock err = nil;
@@ -166,21 +205,24 @@ NSURL *purchasesURL() {
             }
         }
         
-        if(transaction.transactionState == SKPaymentTransactionStatePurchased ||
-           transaction.transactionState == SKPaymentTransactionStateRestored) {
-            [self.purchasedItems addObject:transaction.payment.productIdentifier];
-            [self persistPurchasedItems]; // be extra safe
-            for(NSArray *t in self.purchasesChangedCallbacks) {
-                PurchasedProductsChanged callback = t[0];
-                callback();
+        switch (transaction.transactionState) {
+            case SKPaymentTransactionStateRestored: // sic!
+            case SKPaymentTransactionStatePurchased:
+            {
+                if(completion) completion(transaction);
+                break;
             }
-            self.purchasedItemsChanged = YES;
-            [queue finishTransaction:transaction];
-            if(completion) completion(transaction);
-        }
-        else if(transaction.transactionState == SKPaymentTransactionStateFailed) {
-            [queue finishTransaction:transaction];
-            if(err) err(transaction.error);
+            case SKPaymentTransactionStateFailed:
+            {
+                if(err) err(transaction.error);
+                break;
+            }
+            case SKPaymentTransactionStatePurchasing:
+            {
+                break;
+            }
+            default:
+                break;
         }
     }
 }
