@@ -40,9 +40,10 @@ NSURL *purchasesURL() {
         self.purchasedItems = [NSMutableArray arrayWithContentsOfURL:purchasesURL()];
         if(self.purchasedItems == nil) {
             self.purchasedItems = [NSMutableArray array];
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-            [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
-        }
+		}
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+        [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+
         self.products = [NSMutableDictionary dictionary];
         self.productRequests = [NSMutableArray array];
         self.payments = [NSMutableArray array];
