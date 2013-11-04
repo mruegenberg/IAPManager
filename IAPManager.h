@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
 
+
+
+#if !TARGET_OS_IPHONE
+#ifndef UIApplicationWillResignActiveNotification
+#define UIApplicationWillResignActiveNotification NSApplicationWillResignActiveNotification
+#endif
+#endif
+
 typedef void(^PurchaseCompletionBlock)(SKPaymentTransaction *transaction);
 typedef void(^ProductsCompletionBlock)(NSArray *products);
 typedef void(^ErrorBlock)(NSError *error);
