@@ -232,7 +232,7 @@ NSURL *purchasesURL() {
 
 - (void)removePurchasesChangedCallbackWithContext:(id)context {
     NSUInteger c = [self.purchasesChangedCallbacks count];
-    for(int i = c - 1; i >= 0; --i) {
+    for(NSInteger i = c - 1; i >= 0; --i) {
         NSArray *t = self.purchasesChangedCallbacks[i];
         if(t[1] == context) {
             [self.purchasesChangedCallbacks removeObjectAtIndex:i];
