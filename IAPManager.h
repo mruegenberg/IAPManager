@@ -41,7 +41,7 @@ typedef void(^RestorePurchasesCompletionBlock)(void);
 
 #pragma mark Product Information
 
-// passes a set of products to the completion block
+/// passes a set of products to the completion block
 - (void)getProductsForIds:(NSArray *)productIds completion:(ProductsCompletionBlock)completionBlock;
 
 #pragma mark Purchase
@@ -52,15 +52,15 @@ typedef void(^RestorePurchasesCompletionBlock)(void);
 
 - (void)purchaseProduct:(SKProduct *)product completion:(PurchaseCompletionBlock)completionBlock error:(ErrorBlock)err;
 
-// if an error occurs, `err` is called with the error object (which is potentially nil)
+/// if an error occurs, `err` is called with the error object (which is potentially nil)
 - (void)purchaseProductForId:(NSString *)productId completion:(PurchaseCompletionBlock)completionBlock error:(ErrorBlock)err;
 
 - (BOOL)canPurchase;
 
 #pragma mark Observation
 
-// add a callback that should be called if a new product is purchased.
-// use as the context object an object that you can use to remove the observer again.
+/// add a callback that should be called if a new product is purchased.
+/// use as the context object an object that you can use to remove the observer again.
 - (void)addPurchasesChangedCallback:(PurchasedProductsChanged)callback withContext:(id)context;
 
 - (void)removePurchasesChangedCallbackWithContext:(id)context;
