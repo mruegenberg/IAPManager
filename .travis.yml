@@ -1,13 +1,5 @@
 language: objective-c
 
-install: brew install cmake
+rvm: 1.9.3
 
-compiler:
-  - clang
-
-before_script:
-  - mkdir build
-  - cd build
-  - cmake -G Xcode ..
-
-script: xcodebuild
+script: pod lib lint
