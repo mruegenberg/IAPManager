@@ -50,6 +50,8 @@ typedef void(^RestorePurchasesCompletionBlock)(void);
 
 - (void)restorePurchasesWithCompletion:(RestorePurchasesCompletionBlock)completionBlock;
 
+- (void)restorePurchasesWithCompletion:(RestorePurchasesCompletionBlock)completionBlock error:(ErrorBlock)err;
+
 - (void)purchaseProduct:(SKProduct *)product completion:(PurchaseCompletionBlock)completionBlock error:(ErrorBlock)err;
 
 /// if an error occurs, `err` is called with the error object (which is potentially nil)
