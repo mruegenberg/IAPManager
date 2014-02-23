@@ -55,6 +55,7 @@ typedef void(^RestorePurchasesCompletionBlock)(void);
 /// if an error occurs, `err` is called with the error object (which is potentially nil)
 - (void)purchaseProductForId:(NSString *)productId completion:(PurchaseCompletionBlock)completionBlock error:(ErrorBlock)err;
 
+/// Checks whether purchases are allowed by the App Store. This does not check whether there is a connection to the internet.
 - (BOOL)canPurchase;
 
 #pragma mark Observation
