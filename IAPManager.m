@@ -19,6 +19,7 @@
 @property (strong) NSMutableArray *purchasesChangedCallbacks;
 
 @property (copy) RestorePurchasesCompletionBlock restoreCompletionBlock;
+@property (copy) ErrorBlock restoreErrorBlock;
 
 @end
 
@@ -114,6 +115,11 @@ NSURL *purchasesURL() {
 - (void)restorePurchasesWithCompletion:(RestorePurchasesCompletionBlock)completionBlock {
     self.restoreCompletionBlock = completionBlock;
     return [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+}
+
+- (void)restorePurchasesWithCompletion:(RestorePurchasesCompletionBlock)completionBlock error:(ErrorBlock)err {
+    self.restoreErrorBlock = err;
+    [self restorePurchasesWithCompletion:completionBlock];
 }
 
 - (void)purchaseProduct:(SKProduct *)product completion:(PurchaseCompletionBlock)completionBlock error:(ErrorBlock)err {
@@ -240,11 +246,20 @@ NSURL *purchasesURL() {
     }
 }
 
+-(void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
+    if(self.restoreErrorBlock) {
+        self.restoreErrorBlock(error);
+    }
+    self.restoreCompletionBlock = nil;
+    self.restoreErrorBlock = nil;
+}
+
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
     if (self.restoreCompletionBlock) {
         self.restoreCompletionBlock();
     }
     self.restoreCompletionBlock = nil;
+    self.restoreErrorBlock = nil;
 }
 
 @end
