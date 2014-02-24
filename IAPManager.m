@@ -250,6 +250,7 @@ NSURL *purchasesURL() {
     if(self.restoreErrorBlock) {
         self.restoreErrorBlock(error);
     }
+    self.restoreCompletionBlock = nil;
     self.restoreErrorBlock = nil;
 }
 
@@ -258,6 +259,7 @@ NSURL *purchasesURL() {
         self.restoreCompletionBlock();
     }
     self.restoreCompletionBlock = nil;
+    self.restoreErrorBlock = nil;
 }
 
 @end
