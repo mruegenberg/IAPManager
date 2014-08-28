@@ -7,6 +7,7 @@
 //
 
 #import "IAPManager.h"
+#include <netdb.h> // needed for reachability test
 
 @interface IAPManager () <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 @property (strong) NSMutableArray *purchasedItems;
@@ -26,6 +27,19 @@
 NSURL *purchasesURL() {
     NSURL *appDocDir = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     return [appDocDir URLByAppendingPathComponent:@".purchases.plist"];
+}
+
+// simple reachability. Could also use one of the various Reachability Cocoapods, but why bother when it's so simple?
+BOOL checkAppStoreAvailable() {
+    const char *hostname = "appstore.com";
+    struct hostent *hostinfo = gethostbyname(hostname);
+    if (hostinfo == NULL) {
+#ifdef DEBUG
+        NSLog(@"-> no connection to App Store!\n");
+#endif
+        return NO;
+    }
+    return YES;
 }
 
 @implementation IAPManager
@@ -132,7 +146,7 @@ NSURL *purchasesURL() {
     }
     completionBlock(NULL);
 #else
-    if(! [SKPaymentQueue canMakePayments])
+    if(! [self canPurchase])
         err([NSError errorWithDomain:@"IAPManager" code:0 userInfo:[NSDictionary dictionaryWithObject:@"Can't make payments" forKey:NSLocalizedDescriptionKey]]);
     else {
         SKPayment *payment = [SKPayment paymentWithProduct:product];
@@ -227,7 +241,7 @@ NSURL *purchasesURL() {
 }
 
 - (BOOL)canPurchase {
-    return [SKPaymentQueue canMakePayments];
+    return [SKPaymentQueue canMakePayments] && checkAppStoreAvailable();
 }
 
 #pragma mark - Observation

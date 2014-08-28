@@ -3,3 +3,7 @@ language: objective-c
 rvm: 1.9.3
 
 script: pod lib lint
+
+before_install:
+  - gem install cocoapods -v '0.29.0'
+  
