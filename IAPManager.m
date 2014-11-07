@@ -86,7 +86,7 @@ BOOL checkAppStoreAvailable() {
 
 #pragma mark - Product Information
 
-- (void)getProductsForIds:(NSArray *)productIds completion:(ProductsCompletionBlock)completionBlock {
+- (void)getProductsForIds:(NSArray *)productIds completion:(ProductsCompletionBlock)completionBlock error:(ErrorBlock)error {
     NSMutableArray *result = [NSMutableArray array];
     NSMutableSet *remainingIds = [NSMutableSet set];
     for(NSString *productId in productIds) {
@@ -100,11 +100,18 @@ BOOL checkAppStoreAvailable() {
         completionBlock(result);
         return;
     }
+
+    if (! error)
+        error = ^(NSError *error){};
     
     SKProductsRequest *req = [[SKProductsRequest alloc] initWithProductIdentifiers:remainingIds];
     req.delegate = self;
-    [self.productRequests addObject:@[req, completionBlock]];
+    [self.productRequests addObject:@[req, completionBlock, error]];
     [req start];
+}
+
+- (void)getProductsForIds:(NSArray *)productIds completion:(ProductsCompletionBlock)completionBlock {
+    [self getProductsForIds:productIds completion:completionBlock error:nil];
 }
 
 - (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response {
@@ -114,6 +121,19 @@ BOOL checkAppStoreAvailable() {
         if([tuple objectAtIndex:0] == request) {
             ProductsCompletionBlock completion = [tuple objectAtIndex:1];
             completion(response.products);
+            [self.productRequests removeObjectAtIndex:i];
+            return;
+        }
+    }
+}
+
+- (void)request:(SKRequest *)request didFailWithError:(NSError *)error {
+    NSUInteger c = [self.productRequests count];
+    for(int i = 0; i < c; ++i) {
+        NSArray *tuple = [self.productRequests objectAtIndex:i];
+        if([tuple objectAtIndex:0] == request) {
+            ErrorBlock errorBlock = [tuple objectAtIndex:2];
+            errorBlock(error);
             [self.productRequests removeObjectAtIndex:i];
             return;
         }
