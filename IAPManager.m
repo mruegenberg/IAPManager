@@ -189,6 +189,8 @@ BOOL checkAppStoreAvailable() {
     [self getProductsForIds:@[productId] completion:^(NSArray *products) {
         if([products count] == 0) err([NSError errorWithDomain:@"IAPManager" code:0 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"Didn't find products with ID %@", productId] forKey:NSLocalizedDescriptionKey]]);
         else [self purchaseProduct:[products objectAtIndex:0] completion:completionBlock error:err];
+    } error:^(NSError *error) {
+        err(error);
     }];
 #endif
 }
