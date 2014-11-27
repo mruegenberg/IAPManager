@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <StoreKit/StoreKit.h>
 
+#import <StoreKit/StoreKit.h>
 
 
 #if !TARGET_OS_IPHONE
@@ -43,6 +43,9 @@ typedef void(^RestorePurchasesCompletionBlock)(void);
 
 /// passes a set of products to the completion block
 - (void)getProductsForIds:(NSArray *)productIds completion:(ProductsCompletionBlock)completionBlock;
+
+/// if an error occurs, `err` is called with the error object (which is potentially nil)
+- (void)getProductsForIds:(NSArray *)productIds completion:(ProductsCompletionBlock)completionBlock error:(ErrorBlock)errorBlock;
 
 #pragma mark Purchase
 
