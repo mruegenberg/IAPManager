@@ -42,9 +42,12 @@ typedef void(^RestorePurchasesCompletionBlock)(void);
 #pragma mark Product Information
 
 /// passes a set of products to the completion block
-- (void)getProductsForIds:(NSArray *)productIds completion:(ProductsCompletionBlock)completionBlock;
+- (void)getProductsForIds:(NSArray *)productIds completion:(ProductsCompletionBlock)completionBlock __attribute__((deprecated));
 
-/// if an error occurs, `err` is called with the error object (which is potentially nil)
+/**
+ * passes a set of products to the completion block
+ * if an error occurs, `err` is called with the error object (which is potentially nil)
+*/
 - (void)getProductsForIds:(NSArray *)productIds completion:(ProductsCompletionBlock)completionBlock error:(ErrorBlock)errorBlock;
 
 #pragma mark Purchase
