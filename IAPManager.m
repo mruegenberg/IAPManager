@@ -164,6 +164,7 @@ BOOL checkAppStoreAvailable() {
         PurchasedProductsChanged callback = t[0];
         callback();
     }
+    [self persistPurchasedItems];
     completionBlock(NULL);
 #else
     if(! [self canPurchase])
@@ -184,6 +185,7 @@ BOOL checkAppStoreAvailable() {
         PurchasedProductsChanged callback = t[0];
         callback();
     }
+    [self persistPurchasedItems];
     completionBlock(NULL);
 #else
     [self getProductsForIds:@[productId] completion:^(NSArray *products) {
