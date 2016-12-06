@@ -38,12 +38,11 @@ BOOL checkAppStoreAvailable() {
         NSLog(@"-> no connection to App Store!\n");
 #endif
 	    
-    struct hostent *hostinfo2 = gethostbyname2(hostname,AF_INET6);
+        struct hostent *hostinfo2 = gethostbyname2(hostname,AF_INET6);
 	    
-    if (hostinfo == NULL) {     
-        return NO;   
-    }
-       
+        if (hostinfo2 == NULL) {     
+            return NO;   
+        
     }
     return YES;
 }
