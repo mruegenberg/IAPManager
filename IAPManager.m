@@ -42,7 +42,7 @@ BOOL checkAppStoreAvailable() {
 	    
         if (hostinfo2 == NULL) {     
             return NO;   
-        
+	}
     }
     return YES;
 }
