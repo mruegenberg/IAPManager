@@ -32,12 +32,18 @@ NSURL *purchasesURL() {
 // simple reachability. Could also use one of the various Reachability Cocoapods, but why bother when it's so simple?
 BOOL checkAppStoreAvailable() {
     const char *hostname = "appstore.com";
-    struct hostent *hostinfo = gethostbyname2(hostname,AF_INET6);
+    struct hostent *hostinfo = gethostbyname(hostname);
     if (hostinfo == NULL) {
 #ifdef DEBUG
         NSLog(@"-> no connection to App Store!\n");
 #endif
-        return NO;
+	    
+    struct hostent *hostinfo2 = gethostbyname2(hostname,AF_INET6);
+	    
+    if (hostinfo == NULL) {     
+        return NO;   
+    }
+       
     }
     return YES;
 }
