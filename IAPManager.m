@@ -37,7 +37,12 @@ BOOL checkAppStoreAvailable() {
 #ifdef DEBUG
         NSLog(@"-> no connection to App Store!\n");
 #endif
-        return NO;
+	    
+        struct hostent *hostinfo2 = gethostbyname2(hostname,AF_INET6);
+	    
+        if (hostinfo2 == NULL) {     
+            return NO;   
+	}
     }
     return YES;
 }
