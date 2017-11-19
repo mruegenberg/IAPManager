@@ -67,5 +67,10 @@ How-to
 ## Contact
 
 ![Travis CI build status](https://api.travis-ci.org/mruegenberg/IAPManager.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmruegenberg%2FIAPManager.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmruegenberg%2FIAPManager?ref=badge_shield)
 
 Bug reports and pull requests are welcome! Contact me via e-mail or just by opening an issue on GitHub.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmruegenberg%2FIAPManager.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmruegenberg%2FIAPManager?ref=badge_large)
