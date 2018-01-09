@@ -242,11 +242,13 @@ BOOL checkAppStoreAvailable() {
         NSUInteger c = [self.payments count];
         PurchaseCompletionBlock completion = nil;
         ErrorBlock err = nil;
+        NSInteger paymentIndex = NSNotFound;
         for(int i = 0; i < c; ++i) {
             NSArray *t = [self.payments objectAtIndex:i];
             if([t[0] isEqual:transaction.payment.productIdentifier]) {
                 completion = t[1];
                 err = t[2];
+                paymentIndex = i;
                 break;
             }
         }
@@ -255,10 +257,12 @@ BOOL checkAppStoreAvailable() {
             case SKPaymentTransactionStateRestored: // sic!
             case SKPaymentTransactionStatePurchased: {
                 if(completion) completion(transaction);
+                if(paymentIndex != NSNotFound) [self.payments removeObjectAtIndex:paymentIndex];
                 break;
             }
             case SKPaymentTransactionStateFailed: {
                 if(err) err(transaction.error);
+                if(paymentIndex != NSNotFound) [self.payments removeObjectAtIndex:paymentIndex];
                 break;
             }
             case SKPaymentTransactionStatePurchasing: {
